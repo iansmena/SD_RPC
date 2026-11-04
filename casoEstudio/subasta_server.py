@@ -7,7 +7,10 @@ class ServicioMensajes:
     def __init__(self):
         self.mensajes = []
 
-    def enviar_mensaje(self, usuario, contenido):
+    def verProductos(self):
+        return list(self.mensajes)
+    
+    def pujar(self, usuario, contenido):
         if not contenido.strip():
             return "Error: El mensaje no puede estar vacio."
 
@@ -27,20 +30,17 @@ class ServicioMensajes:
 if __name__ == "__main__":
     daemon = Pyro4.Daemon()
 
-
     ns = Pyro4.locateNS()
-
 
     servicio = ServicioMensajes()
     uri = daemon.register(servicio)
 
+    ns.register("subastas.central", uri)
 
-    ns.register("practica.mensajeria", uri)
-
-    print("Servidor de mensajeria iniciado.")
+    print("Servidor de subastas iniciado.")
     print(f"URI: {uri}")
-    print("Servicio registrado como: practica.mensajeria")
-    print("Esperando mensajes...")
+    print("Servicio registrado como: subastas.central")
+    print("Esperando...")
 
 
     daemon.requestLoop()
